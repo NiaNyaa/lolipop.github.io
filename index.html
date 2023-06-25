@@ -90,18 +90,25 @@
   </div>
 
   <script>
-    // Format input dengan tanda titik setiap tiga digit
-    function formatInputValue(value) {
-      return value.replace(/\D/g, "")
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    // Atur event listener pada input fields
+    // Set initial value of inputs to 0
     const loliInput = document.getElementById('loliInput');
     const shardInput = document.getElementById('shardInput');
     const priceInput = document.getElementById('priceInput');
     const totalInput = document.getElementById('totalInput');
 
+    loliInput.value = '0';
+    shardInput.value = '0';
+    priceInput.value = '0';
+    totalInput.value = '0';
+
+    // Format input dengan tanda titik setiap tiga digit
+    function formatInputValue(value) {
+      const formatter = new Intl.NumberFormat('en-US');
+      const parsedValue = parseFloat(value.replace(/[^0-9.-]+/g, "").replace(/\./g, "")) || 0;
+      return formatter.format(parsedValue);
+    }
+
+    // Atur event listener pada input fields
     [loliInput, shardInput, priceInput, totalInput].forEach(input => {
       input.addEventListener('input', () => {
         input.value = formatInputValue(input.value);
@@ -111,17 +118,17 @@
     // Convert Lolipop to Shard
     const loliResult = document.getElementById('loliResult');
     loliInput.addEventListener('input', () => {
-      const loliValue = parseInt(loliInput.value.replace(/\D/g, "")) || 0;
+      const loliValue = parseFloat(loliInput.value.replace(/[^0-9.-]+/g, "").replace(/\./g, "")) || 0;
       const shardValue = loliValue * 5;
-      loliResult.textContent = `Total: ${shardValue.toLocaleString()} shard`;
+      loliResult.textContent = `Total: ${formatInputValue(shardValue.toString())} shard`;
     });
 
     // Convert Shard to Lolipop
     const shardResult = document.getElementById('shardResult');
     shardInput.addEventListener('input', () => {
-      const shardValue = parseInt(shardInput.value.replace(/\D/g, "")) || 0;
+      const shardValue = parseFloat(shardInput.value.replace(/[^0-9.-]+/g, "").replace(/\./g, "")) || 0;
       const loliValue = Math.floor(shardValue / 5);
-      shardResult.textContent = `Total: ${loliValue.toLocaleString()} loli`;
+      shardResult.textContent = `Total: ${formatInputValue(loliValue.toString())} loli`;
     });
 
     // Calculate Total Price
@@ -130,10 +137,10 @@
     totalInput.addEventListener('input', calculateTotal);
 
     function calculateTotal() {
-      const priceValue = parseInt(priceInput.value.replace(/\D/g, "")) || 0;
-      const totalValue = parseInt(totalInput.value.replace(/\D/g, "")) || 0;
+      const priceValue = parseFloat(priceInput.value.replace(/[^0-9.-]+/g, "").replace(/\./g, "")) || 0;
+      const totalValue = parseFloat(totalInput.value.replace(/[^0-9.-]+/g, "").replace(/\./g, "")) || 0;
       const totalPrice = priceValue * totalValue;
-      priceResult.textContent = `Total: ${totalPrice.toLocaleString()} coin`;
+      priceResult.textContent = `Total: ${formatInputValue(totalPrice.toFixed(0))} coin`;
     }
   </script>
 </body>
