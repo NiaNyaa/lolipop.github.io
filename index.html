@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>lolipop convert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    
+    .input-group {
+      margin-bottom: 10px;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #666;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    
+    .result {
+      margin-top: 10px;
+      padding: 8px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+    
+    /* Media queries for responsive design */
+    @media only screen and (max-width: 480px) {
+      .container {
+        max-width: 100%;
+        margin: 20px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Convert Lolipop to Shard</h1>
+    <div class="input-group">
+      <label>Lolipop:</label>
+      <input id="loliInput" type="text">
+    </div>
+    <div class="result" id="loliResult">Total:</div>
+    
+    <h1>Convert Shard to Lolipop</h1>
+    <div class="input-group">
+      <label>Shard:</label>
+      <input id="shardInput" type="text">
+    </div>
+    <div class="result" id="shardResult">Total:</div>
+    
+    <h1>Calculate Total Price</h1>
+    <div class="input-group">
+      <label>Price Loli Now:</label>
+      <input id="priceInput" type="text">
+    </div>
+    <div class="input-group">
+      <label>Total Loli:</label>
+      <input id="totalInput" type="text">
+    </div>
+    <div class="result" id="priceResult">Total:</div>
+  </div>
+
+  <script>
+    // Format input dengan tanda titik setiap tiga digit
+    function formatInputValue(value) {
+      return value.replace(/\D/g, "")
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Atur event listener pada input fields
+    const loliInput = document.getElementById('loliInput');
+    const shardInput = document.getElementById('shardInput');
+    const priceInput = document.getElementById('priceInput');
+    const totalInput = document.getElementById('totalInput');
+
+    [loliInput, shardInput, priceInput, totalInput].forEach(input => {
+      input.addEventListener('input', () => {
+        input.value = formatInputValue(input.value);
+      });
+    });
+
+    // Convert Lolipop to Shard
+    const loliResult = document.getElementById('loliResult');
+    loliInput.addEventListener('input', () => {
+      const loliValue = parseInt(loliInput.value.replace(/\D/g, "")) || 0;
+      const shardValue = loliValue * 5;
+      loliResult.textContent = `Total: ${shardValue.toLocaleString()} shard`;
+    });
+
+    // Convert Shard to Lolipop
+    const shardResult = document.getElementById('shardResult');
+    shardInput.addEventListener('input', () => {
+      const shardValue = parseInt(shardInput.value.replace(/\D/g, "")) || 0;
+      const loliValue = Math.floor(shardValue / 5);
+      shardResult.textContent = `Total: ${loliValue.toLocaleString()} loli`;
+    });
+
+    // Calculate Total Price
+    const priceResult = document.getElementById('priceResult');
+    priceInput.addEventListener('input', calculateTotal);
+    totalInput.addEventListener('input', calculateTotal);
+
+    function calculateTotal() {
+      const priceValue = parseInt(priceInput.value.replace(/\D/g, "")) || 0;
+      const totalValue = parseInt(totalInput.value.replace(/\D/g, "")) || 0;
+      const totalPrice = priceValue * totalValue;
+      priceResult.textContent = `Total: ${totalPrice.toLocaleString()} coin`;
+    }
+  </script>
+</body>
+</html>
